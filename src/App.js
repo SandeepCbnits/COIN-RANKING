@@ -4,41 +4,39 @@ import Pagination from "./Pagination";
 const App = () => {
   const [coinDatas, setCoinDatas] = useState([]);
   const [coinFilter, setCoinFilter] = useState("");
-  const [currentPage, setCurrentPage]=useState(1);
-  const [postPerPage]=useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postPerPage] = useState(10);
 
-
-  let fetchData = ()=>{
+  let fetchData = () => {
     fetch("/data.json")
-    .then((res) => res.json())
-    .then((data) => {
-      setCoinDatas(data.data.coins);
-    });
-  }
-
-  const onSearchData = (e) => {      
-    setCoinFilter(e.target.value);
-    if(e.target.value){
-      const result = coinDatas.filter((list) =>
-      list.name.toLowerCase().includes(coinFilter.toLowerCase())
-    );
-    setCoinDatas(result);
-    }else{
-     fetchData()
-    } 
+      .then((res) => res.json())
+      .then((data) => {
+        setCoinDatas(data.data.coins);
+      });
   };
 
-  useEffect(() => {   
-    fetchData()
+  const onSearchData = (e) => {
+    setCoinFilter(e.target.value);
+    if (e.target.value) {
+      const result = coinDatas.filter((list) =>
+        list.name.toLowerCase().includes(coinFilter.toLowerCase())
+      );
+      setCoinDatas(result);
+    } else {
+      fetchData();
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
-  
+// <----------------------------------- Pagination Per page number of list----------------------->
   let indexOfLastPost = currentPage * postPerPage;
-  let indexOfFirstPost =indexOfLastPost - postPerPage;
+  let indexOfFirstPost = indexOfLastPost - postPerPage;
   let currentPosts = coinDatas.slice(indexOfFirstPost, indexOfLastPost);
 
-
-  const paginate=(pageNumber)=>setCurrentPage(pageNumber)
-  
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+// let price = coinDatas.price.toFixed(2)
   return (
     <div>
       <div className="form">
@@ -46,20 +44,24 @@ const App = () => {
           <h3>Currency Ranking</h3>
         </div>
         <div>
-          <input type="text"  onChange={onSearchData} />
+          <input
+            type="text"
+            placeholder="Search ex. Bit, Sol"
+            onChange={onSearchData}
+          />
         </div>
       </div>
       <div>
-          {/* <--------------------------Table ----------------------------> */}
+        {/* <--------------------------Table ----------------------------> */}
         <table>
-          <thead>
+          <thead >
             <th>Currency Rank</th>
             <th>Currency Name</th>
             <th>Currency Symbole</th>
             <th>Currency Price</th>
             {/* <th>Currency Price Change</th> */}
           </thead>
-            {/* <--------------------------Table Body----------------------------> */}
+          {/* <--------------------------Table Body----------------------------> */}
           <tbody>
             {currentPosts.map((coin) => {
               return (
@@ -76,8 +78,13 @@ const App = () => {
             })}
           </tbody>
         </table>
+        {/* ----------------------------------------Pagination ------------------------------------------> */}
         <div>
-          <Pagination postsPerPage={postPerPage} totalPosts={coinDatas.length} paginate={paginate}/>
+          <Pagination
+            postsPerPage={postPerPage}
+            totalPosts={coinDatas.length}
+            paginate={paginate}
+          />
         </div>
       </div>
     </div>

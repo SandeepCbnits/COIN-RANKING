@@ -2,19 +2,21 @@
  text-align: center;
 
 }
+/* <-------------input -----------> */
 .form input{
   padding: 0.5rem 4rem;
   border-radius: 4px;
   border: 1px solid gray;
 }
-table, thead {
+/* <---------------Table---------------> */
+table, thead , th ,tr , td{
   text-align: center;
-  width: 100%;
+  width: 50%;
+  margin: 10px auto;
+  border: 1px solid gray;
+  border-collapse: collapse;  
 }
-.table-head{
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+.table-head{ 
   font-weight: bolder;
  
 }
